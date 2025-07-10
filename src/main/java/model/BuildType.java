@@ -10,13 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Project {
+public class BuildType {
+
     @JsonProperty("id")
     private String id;
 
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("parentProjectId")
-    private String parentProjectId;
+    @JsonProperty("projectId")
+    private String projectId;
 }

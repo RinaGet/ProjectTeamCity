@@ -19,7 +19,7 @@ public class VaultTest {
         System.out.println("Получено значение из Vault по ключу '" + secretKey + "': " + mask(value));
     }
 
-    // Удобная маскировка чувствительных значений в логе
+    // маскировка чувствительных значений в логе
     private String mask(String value) {
         return value.length() <= 4 ? "****" : value.substring(0, 2) + "***" + value.substring(value.length() - 2);
     }

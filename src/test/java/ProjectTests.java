@@ -1,4 +1,4 @@
-import httpClient.TeamCityApiClient;
+import httpClient.project.ProjectClient;
 import io.restassured.response.Response;
 import model.Project;
 import org.junit.jupiter.api.Test;
@@ -7,15 +7,24 @@ import util.DataGenerator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProjectTests {
+
+    private final ProjectClient projectClient = new ProjectClient();
+
     @Test
-    void createProjectTest() {
-        Project project = DataGenerator.randomProject();
+    void createAndFetchProjectTest() {
+        Project newProject = DataGenerator.randomProject();
+        System.out.println(newProject.getId()); //remove later!
 
-        Response response = TeamCityApiClient.post("/app/rest/projects", project);
-        response.then().statusCode(200);
+        Response createResponse = projectClient.createProject(newProject);
+        createResponse.then().statusCode(200);
 
-        Project created = response.as(Project.class);
-        assertEquals(project.getName(), created.getName());
-        assertEquals(project.getParentProjectId(), created.getParentProjectId());
+        Project created = createResponse.as(Project.class);
+        assertEquals(newProject.getName(), created.getName());
+
+        Response getResponse = projectClient.getProject(created.getId());
+        getResponse.then().statusCode(200);
+
+        Project fetched = getResponse.as(Project.class);
+        assertEquals(created.getName(), fetched.getName());
     }
 }
